@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { getToken } from "../api.js";
 import InstalarApp from "../components/InstalarApp.jsx";
-import { DIAS_PRUEBA, PRECIO_ANUAL, PRECIO_MENSUAL, ahorroAnual } from "../lib/planes.js";
+import { DIAS_PRUEBA, PRECIO_ANUAL, PRECIO_MENSUAL } from "../lib/planes.js";
 
 export default function Landing() {
   const dentro = Boolean(getToken());
@@ -85,7 +85,7 @@ export default function Landing() {
           <article className="price-card">
             <p className="eyebrow">Anual</p>
             <p className="price">{PRECIO_ANUAL} € / año</p>
-            <p>Ahorras {ahorroAnual} € respecto a pagar mes a mes.</p>
+            <p>Toda la plataforma. Un solo pago al año.</p>
             <Link className="btn" to="/registro">
               Empezar
             </Link>
