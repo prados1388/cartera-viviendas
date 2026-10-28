@@ -19,7 +19,7 @@ const tiposVivienda = [
 ];
 
 const categorias = ["comunidad", "ibi", "seguro", "reforma", "suministros", "plagas", "otro"];
-const tiposAlarma = ["revision", "plagas", "contrato", "otro"];
+const tiposAlarma = ["revision", "contrato", "otro"];
 
 export default function Vivienda() {
   const { id } = useParams();
