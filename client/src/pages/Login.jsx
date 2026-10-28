@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api, setSesion } from "../api.js";
+import CampoClave from "../components/CampoClave.jsx";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -42,16 +43,7 @@ export default function Login() {
             required
           />
         </label>
-        <label>
-          Contraseña
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            autoComplete="current-password"
-            required
-          />
-        </label>
+        <CampoClave value={password} onChange={(e) => setPassword(e.target.value)} />
         {error ? <p className="error">{error}</p> : null}
         <button className="btn full" type="submit" disabled={cargando}>
           {cargando ? "Entrando…" : "Entrar"}

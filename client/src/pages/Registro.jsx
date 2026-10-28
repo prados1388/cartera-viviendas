@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api, setSesion } from "../api.js";
+import CampoClave from "../components/CampoClave.jsx";
 import { DIAS_PRUEBA, PRECIO_ANUAL, PRECIO_MENSUAL } from "../lib/planes.js";
 
 export default function Registro() {
@@ -51,17 +52,13 @@ export default function Registro() {
             required
           />
         </label>
-        <label>
-          Contraseña (mín. 6)
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            minLength={6}
-            autoComplete="new-password"
-            required
-          />
-        </label>
+        <CampoClave
+          etiqueta="Contraseña (mín. 6)"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          autoComplete="new-password"
+          minLength={6}
+        />
         {error ? <p className="error">{error}</p> : null}
         <button className="btn full" type="submit" disabled={cargando}>
           {cargando ? "Creando…" : "Empezar"}

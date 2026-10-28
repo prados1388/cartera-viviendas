@@ -154,6 +154,35 @@ textarea {
   background: #fff;
 }
 
+.clave-wrap {
+  position: relative;
+  display: block;
+}
+
+.clave-wrap input {
+  width: 100%;
+  padding-right: 2.6rem;
+}
+
+.ojo {
+  position: absolute;
+  right: 0.35rem;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 0.3rem;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+}
+
+.ojo:hover {
+  color: var(--ink);
+}
+
 .landing {
   max-width: 1100px;
   margin: 0 auto;
