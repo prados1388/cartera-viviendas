@@ -293,7 +293,7 @@ export default function Vivienda() {
       </div>
 
       {resultados ? (
-        <>
+        <div className="cifras-duo">
           <BloqueResultado
             titulo={`${MESES[resultados.mes - 1]} · esta vivienda`}
             datos={resultados.conjunto.mes}
@@ -302,7 +302,7 @@ export default function Vivienda() {
             titulo={`${resultados.anio} · esta vivienda`}
             datos={resultados.conjunto.anio}
           />
-        </>
+        </div>
       ) : null}
 
       <div className="tabs">

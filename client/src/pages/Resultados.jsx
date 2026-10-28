@@ -64,8 +64,10 @@ export default function Resultados() {
         <p className="muted">Calculando…</p>
       ) : (
         <>
-          <BloqueResultado titulo={`${MESES[mes - 1]} · toda la cartera`} datos={datos.conjunto.mes} />
-          <BloqueResultado titulo={`${anio} · toda la cartera`} datos={datos.conjunto.anio} />
+          <div className="cifras-duo">
+            <BloqueResultado titulo={`${MESES[mes - 1]} · toda la cartera`} datos={datos.conjunto.mes} />
+            <BloqueResultado titulo={`${anio} · toda la cartera`} datos={datos.conjunto.anio} />
+          </div>
 
           <section className="card">
             <h2>Año {anio}, mes a mes</h2>

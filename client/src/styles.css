@@ -1,14 +1,14 @@
 :root {
-  --ink: #1c1914;
-  --muted: #6b6458;
-  --paper: #f3eee4;
-  --card: #fffdf8;
-  --line: #ddd4c4;
+  --ink: #1a1814;
+  --muted: #6e675c;
+  --paper: #f1ebe0;
+  --card: #fffcf7;
+  --line: #e2d8c6;
   --green: #1f3d32;
   --green-2: #2f5a48;
-  --gold: #c4a574;
-  --danger: #8b2e2e;
-  --shadow: 0 10px 30px rgba(28, 25, 20, 0.08);
+  --gold: #b8924d;
+  --danger: #9a3530;
+  --shadow: 0 1px 0 rgba(28, 25, 20, 0.04), 0 8px 22px rgba(28, 25, 20, 0.05);
 }
 
 * {
@@ -24,7 +24,9 @@ body,
 body {
   margin: 0;
   color: var(--ink);
-  background: var(--paper);
+  background:
+    radial-gradient(1200px 500px at 10% -10%, rgba(31, 61, 50, 0.06), transparent 50%),
+    var(--paper);
   font-family: "Source Sans 3", system-ui, sans-serif;
   line-height: 1.45;
 }
@@ -38,13 +40,13 @@ h2,
 }
 
 h1 {
-  margin: 0 0 0.3rem;
-  font-size: clamp(1.7rem, 3vw, 2.6rem);
+  margin: 0 0 0.25rem;
+  font-size: clamp(1.45rem, 2.4vw, 2.1rem);
 }
 
 h2 {
-  margin: 0 0 0.8rem;
-  font-size: 1.15rem;
+  margin: 0 0 0.7rem;
+  font-size: 1.05rem;
 }
 
 a {
@@ -122,8 +124,8 @@ a {
 .card {
   background: var(--card);
   border: 1px solid var(--line);
-  border-radius: 18px;
-  padding: 1.2rem;
+  border-radius: 14px;
+  padding: 1rem 1.05rem;
   box-shadow: var(--shadow);
 }
 
@@ -167,6 +169,10 @@ textarea {
   gap: 1rem;
 }
 
+.landing h1 {
+  font-size: clamp(1.9rem, 4vw, 2.7rem);
+}
+
 .hero {
   padding: 3.5rem 0 2rem;
   max-width: 720px;
@@ -204,8 +210,9 @@ textarea {
 .features article {
   background: var(--card);
   border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 1.1rem;
+  border-radius: 14px;
+  padding: 1rem 1.05rem;
+  box-shadow: var(--shadow);
 }
 
 .pricing {
@@ -262,7 +269,7 @@ textarea {
 
 .app-shell {
   display: grid;
-  grid-template-columns: 240px 1fr;
+  grid-template-columns: 220px 1fr;
   min-height: 100vh;
 }
 
@@ -313,7 +320,8 @@ textarea {
 }
 
 .app-main {
-  padding: 1.6rem 1.6rem 3rem;
+  padding: 1.4rem 1.5rem 2.6rem;
+  max-width: 1080px;
 }
 
 .page-head {
@@ -351,36 +359,106 @@ textarea {
 .stat-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.9rem;
-  margin-bottom: 1.2rem;
+  gap: 0.55rem;
+  margin-bottom: 0.9rem;
+}
+
+.card.stat {
+  padding: 0.65rem 0.8rem;
+  box-shadow: none;
+}
+
+.card.stat .muted {
+  margin: 0 0 0.15rem;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
 }
 
 .stat-num {
   margin: 0;
   font-family: Fraunces, serif;
-  font-size: 2rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.2;
 }
 
 .stat-num.small {
-  font-size: 1.15rem;
+  font-size: 1rem;
 }
 
 .stat-num.ok,
-.tabla-res td.ok {
+.tabla-res td.ok,
+.cifra.ok strong {
   color: var(--green-2);
 }
 
 .stat-num.ko,
-.tabla-res td.ko {
+.tabla-res td.ko,
+.cifra.ko strong {
   color: var(--danger);
 }
 
+.cifras-duo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem;
+  margin-bottom: 0.7rem;
+}
+
+.bloque-resultado {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 0.75rem 0.85rem 0.7rem;
+  box-shadow: var(--shadow);
+}
+
 .bloque-resultado h2 {
-  margin-top: 0.4rem;
+  margin: 0 0 0.5rem;
+  font-family: "Source Sans 3", system-ui, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.cifras-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.4rem;
+}
+
+.cifra {
+  background: #f6f1e6;
+  border-radius: 10px;
+  padding: 0.45rem 0.55rem;
+  min-width: 0;
+}
+
+.cifra span {
+  display: block;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+  font-weight: 600;
+  margin-bottom: 0.12rem;
+}
+
+.cifra strong {
+  display: block;
+  font-family: Fraunces, Georgia, serif;
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
 }
 
 .ver-desglose {
-  margin: -0.3rem 0 1.2rem;
+  margin: 0 0 1.1rem;
 }
 
 .filtros {
@@ -504,6 +582,12 @@ textarea {
 .vivienda-card {
   text-decoration: none;
   color: inherit;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.vivienda-card:hover {
+  transform: translateY(-2px);
+  border-color: #cbbca3;
 }
 
 .vivienda-card h2 {
@@ -589,6 +673,7 @@ textarea {
   .pricing,
   .price-cards,
   .stat-row,
+  .cifras-duo,
   .filtros,
   .form-grid {
     grid-template-columns: 1fr;

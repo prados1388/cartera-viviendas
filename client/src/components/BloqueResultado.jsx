@@ -7,19 +7,19 @@ export default function BloqueResultado({ titulo, datos }) {
   return (
     <section className="bloque-resultado">
       <h2>{titulo}</h2>
-      <div className="stat-row">
-        <article className="card stat">
-          <p className="muted">Ingresos</p>
-          <p className="stat-num">{euros(datos.ingresos)}</p>
-        </article>
-        <article className="card stat">
-          <p className="muted">Gastos</p>
-          <p className="stat-num">{euros(datos.gastos)}</p>
-        </article>
-        <article className="card stat">
-          <p className="muted">{beneficio >= 0 ? "Beneficio" : "Pérdida"}</p>
-          <p className={`stat-num ${claseResultado(beneficio)}`}>{euros(beneficio)}</p>
-        </article>
+      <div className="cifras-row">
+        <div className="cifra">
+          <span>Ingresos</span>
+          <strong>{euros(datos.ingresos)}</strong>
+        </div>
+        <div className="cifra">
+          <span>Gastos</span>
+          <strong>{euros(datos.gastos)}</strong>
+        </div>
+        <div className={`cifra ${claseResultado(beneficio)}`}>
+          <span>{beneficio >= 0 ? "Beneficio" : "Pérdida"}</span>
+          <strong>{euros(beneficio)}</strong>
+        </div>
       </div>
     </section>
   );

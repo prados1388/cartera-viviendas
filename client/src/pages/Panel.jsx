@@ -54,11 +54,13 @@ export default function Panel() {
 
       {resultados ? (
         <>
-          <BloqueResultado
-            titulo={`${MESES[resultados.mes - 1]} · cartera`}
-            datos={resultados.conjunto.mes}
-          />
-          <BloqueResultado titulo={`${resultados.anio} · cartera`} datos={resultados.conjunto.anio} />
+          <div className="cifras-duo">
+            <BloqueResultado
+              titulo={`${MESES[resultados.mes - 1]} · cartera`}
+              datos={resultados.conjunto.mes}
+            />
+            <BloqueResultado titulo={`${resultados.anio} · cartera`} datos={resultados.conjunto.anio} />
+          </div>
           <p className="muted ver-desglose">
             <Link to="/resultados">Ver desglose por vivienda →</Link>
           </p>
