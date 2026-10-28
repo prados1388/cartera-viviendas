@@ -50,7 +50,7 @@ export default function Landing() {
         </article>
         <article>
           <h2>Contratos de alquiler</h2>
-          <p>A nombre de quién está, renta, fianza y fecha de fin. Nada de buscar papeles.</p>
+          <p>Datos del inquilino, renta, fianza y fecha de fin. Nada de buscar papeles.</p>
         </article>
         <article>
           <h2>Alarmas de revisión</h2>
