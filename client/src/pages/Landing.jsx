@@ -32,8 +32,8 @@ export default function Landing() {
         <p className="eyebrow">Para inversores con varias viviendas</p>
         <h1>Controla gastos, contratos y revisiones de toda tu cartera.</h1>
         <p className="lead">
-          Añade cada inmueble, anota lo que cuesta, quién lo alquila y hasta cuándo, y recibe avisos
-          de revisiones, plagas y vencimientos.
+          Añade cada inmueble, anota lo que cuesta, quién lo alquila y hasta cuándo. Lleva un mayor
+          control de tus finanzas y recibe avisos de revisiones y vencimientos.
         </p>
         <div className="hero-actions">
           <Link className="btn large" to={dentro ? "/panel" : "/registro"}>
@@ -57,8 +57,8 @@ export default function Landing() {
           <p>Caldera, seguro, ITE o lo que tú marques. El panel te enseña lo que caduca pronto.</p>
         </article>
         <article>
-          <h2>Control de plagas</h2>
-          <p>Tratamientos hechos, empresa y próxima revisión, ligados a cada inmueble.</p>
+          <h2>Control de finanzas</h2>
+          <p>Ingresos, gastos y beneficio, por vivienda y de toda la cartera, mes a mes y año a año.</p>
         </article>
       </section>
 
