@@ -57,8 +57,8 @@ export default function Landing() {
           <p>Caldera, seguro, ITE o lo que tú marques. El panel te enseña lo que caduca pronto.</p>
         </article>
         <article>
-          <h2>Control de finanzas</h2>
-          <p>Ingresos, gastos y beneficio, por vivienda y de toda la cartera, mes a mes y año a año.</p>
+          <h2>Seguimiento</h2>
+          <p>Contratos, revisiones y vencimientos de cada inmueble, vistos juntos en el panel.</p>
         </article>
       </section>
 
