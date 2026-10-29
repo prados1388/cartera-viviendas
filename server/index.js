@@ -9,6 +9,7 @@ const viviendaRoutes = require("./routes/viviendas");
 const anexoRoutes = require("./routes/anexos");
 const panelRoutes = require("./routes/panel");
 const resultadosRoutes = require("./routes/resultados");
+const archivoRoutes = require("./routes/archivos");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -22,6 +23,7 @@ app.use("/api/viviendas", viviendaRoutes);
 app.use("/api/viviendas", anexoRoutes);
 app.use("/api/panel", panelRoutes);
 app.use("/api/resultados", resultadosRoutes);
+app.use("/api/viviendas", archivoRoutes);
 
 const dist = path.join(__dirname, "..", "client", "dist");
 if (fs.existsSync(dist)) {
@@ -35,6 +37,9 @@ if (fs.existsSync(dist)) {
 
 app.use((err, _req, res, _next) => {
   console.error(err);
+  if (err.code === "LIMIT_FILE_SIZE") {
+    return res.status(400).json({ ok: false, error: "El archivo no puede superar 8 MB" });
+  }
   res.status(400).json({ ok: false, error: err.message || "Error del servidor" });
 });
 

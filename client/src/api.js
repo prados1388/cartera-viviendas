@@ -60,8 +60,30 @@ export function fechaCorta(valor) {
 }
 
 export function euros(valor) {
-  return Number(valor || 0).toLocaleString("es-ES", {
+  if (valor == null || valor === "") return "—";
+  return Number(valor).toLocaleString("es-ES", {
     style: "currency",
     currency: "EUR",
   });
+}
+
+export function porcentaje(valor) {
+  if (valor == null || valor === "") return "—";
+  return `${Number(valor).toLocaleString("es-ES", { maximumFractionDigits: 2 })} %`;
+}
+
+export async function bajarArchivo(viviendaId, archivoId, nombre) {
+  const res = await fetch(`${API_BASE}/api/viviendas/${viviendaId}/archivos/${archivoId}`, {
+    headers: { Authorization: `Bearer ${getToken()}` },
+  });
+  if (!res.ok) throw new Error("No se pudo descargar el archivo");
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = nombre || "archivo";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
 }

@@ -57,6 +57,10 @@ export default function Viviendas() {
       <div className="split">
         <form className="card" onSubmit={crear}>
           <h2>Añadir inmueble</h2>
+          <p className="muted small">
+            Con alias y dirección basta. El resto (inversión, seguros, escrituras…) se completa en la
+            ficha.
+          </p>
           <label>
             Alias (ej. Triana 12)
             <input name="alias" value={form.alias} onChange={campo} required />

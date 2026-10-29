@@ -2,20 +2,16 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { api, euros, fechaCorta } from "../api.js";
 import BloqueResultado from "../components/BloqueResultado.jsx";
+import FichaEditor from "../components/FichaEditor.jsx";
+import FichaResumen from "../components/FichaResumen.jsx";
 import { MESES } from "../lib/cifras.js";
+import { perfilAViviendaBody, viviendaAPerfil } from "../lib/viviendaForm.js";
 
 const pestanas = [
   { id: "gastos", label: "Gastos" },
   { id: "contratos", label: "Contrato" },
   { id: "alarmas", label: "Alarmas" },
   { id: "plagas", label: "Plagas" },
-];
-
-const tiposVivienda = [
-  { value: "piso", label: "Piso" },
-  { value: "casa", label: "Casa" },
-  { value: "local", label: "Local" },
-  { value: "otro", label: "Otro" },
 ];
 
 const categorias = ["comunidad", "ibi", "seguro", "reforma", "suministros", "plagas", "otro"];
@@ -52,21 +48,7 @@ export default function Vivienda() {
   function abrirEdicion() {
     const v = ficha.vivienda;
     const c = ficha.contratos.find((x) => x.activo) || ficha.contratos[0];
-    setPerfil({
-      alias: v.alias,
-      direccion: v.direccion,
-      ciudad: v.ciudad || "",
-      tipo: v.tipo || "piso",
-      notas: v.notas || "",
-      contratoId: c?._id || "",
-      inquilino: c?.inquilino || "",
-      documento: c?.documento || "",
-      fechaInicio: fechaInput(c?.fechaInicio),
-      fechaFin: fechaInput(c?.fechaFin),
-      renta: c ? String(c.renta ?? "") : "",
-      deposito: c ? String(c.deposito ?? "") : "",
-      notasContrato: c?.notas || "",
-    });
+    setPerfil(viviendaAPerfil(v, c));
     setEditandoPerfil(true);
   }
 
@@ -80,13 +62,7 @@ export default function Vivienda() {
       }
       await api(`/api/viviendas/${id}`, {
         method: "PUT",
-        body: {
-          alias: perfil.alias,
-          direccion: perfil.direccion,
-          ciudad: perfil.ciudad,
-          tipo: perfil.tipo,
-          notas: perfil.notas,
-        },
+        body: perfilAViviendaBody(perfil),
       });
       if (perfil.inquilino && perfil.fechaInicio && perfil.fechaFin) {
         const body = {
@@ -126,7 +102,7 @@ export default function Vivienda() {
     return <p className="muted">{error || "Cargando ficha…"}</p>;
   }
 
-  const { vivienda, gastos, contratos, alarmas, plagas } = ficha;
+  const { vivienda, gastos, contratos, alarmas, plagas, archivos = [] } = ficha;
   const contratoActivo = contratos.find((c) => c.activo) || contratos[0];
 
   return (
@@ -153,127 +129,32 @@ export default function Vivienda() {
         </div>
       </header>
 
+      {error ? <p className="error">{error}</p> : null}
+
       {editandoPerfil && perfil ? (
-        <form className="card" onSubmit={guardarPerfil}>
-          <h2>Editar vivienda</h2>
-          <div className="form-grid">
-            <div>
-              <h3>Inmueble</h3>
-              <label>
-                Alias
-                <input
-                  value={perfil.alias}
-                  onChange={(e) => setPerfil({ ...perfil, alias: e.target.value })}
-                  required
-                />
-              </label>
-              <label>
-                Dirección
-                <input
-                  value={perfil.direccion}
-                  onChange={(e) => setPerfil({ ...perfil, direccion: e.target.value })}
-                  required
-                />
-              </label>
-              <label>
-                Ciudad
-                <input
-                  value={perfil.ciudad}
-                  onChange={(e) => setPerfil({ ...perfil, ciudad: e.target.value })}
-                />
-              </label>
-              <label>
-                Tipo
-                <select
-                  value={perfil.tipo}
-                  onChange={(e) => setPerfil({ ...perfil, tipo: e.target.value })}
-                >
-                  {tiposVivienda.map((t) => (
-                    <option key={t.value} value={t.value}>
-                      {t.label}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label>
-                Notas del inmueble
-                <textarea
-                  value={perfil.notas}
-                  onChange={(e) => setPerfil({ ...perfil, notas: e.target.value })}
-                  rows={3}
-                />
-              </label>
-            </div>
-            <div>
-              <h3>Alquiler</h3>
-              <label>
-                Nombre del inquilino
-                <input
-                  value={perfil.inquilino}
-                  onChange={(e) => setPerfil({ ...perfil, inquilino: e.target.value })}
-                />
-              </label>
-              <label>
-                DNI / NIE
-                <input
-                  value={perfil.documento}
-                  onChange={(e) => setPerfil({ ...perfil, documento: e.target.value })}
-                />
-              </label>
-              <label>
-                Renta mensual (€)
-                <input
-                  type="number"
-                  step="0.01"
-                  value={perfil.renta}
-                  onChange={(e) => setPerfil({ ...perfil, renta: e.target.value })}
-                />
-              </label>
-              <label>
-                Fianza (€)
-                <input
-                  type="number"
-                  step="0.01"
-                  value={perfil.deposito}
-                  onChange={(e) => setPerfil({ ...perfil, deposito: e.target.value })}
-                />
-              </label>
-              <label>
-                Inicio de contrato
-                <input
-                  type="date"
-                  value={perfil.fechaInicio}
-                  onChange={(e) => setPerfil({ ...perfil, fechaInicio: e.target.value })}
-                />
-              </label>
-              <label>
-                Fin de contrato
-                <input
-                  type="date"
-                  value={perfil.fechaFin}
-                  onChange={(e) => setPerfil({ ...perfil, fechaFin: e.target.value })}
-                />
-              </label>
-              <label>
-                Notas del contrato
-                <textarea
-                  value={perfil.notasContrato}
-                  onChange={(e) => setPerfil({ ...perfil, notasContrato: e.target.value })}
-                  rows={3}
-                />
-              </label>
-            </div>
-          </div>
-          <div className="form-actions">
-            <button className="btn" type="submit" disabled={guardandoPerfil}>
-              {guardandoPerfil ? "Guardando…" : "Guardar cambios"}
-            </button>
-            <button type="button" className="btn ghost" onClick={() => setEditandoPerfil(false)}>
-              Cancelar
-            </button>
-          </div>
-        </form>
-      ) : null}
+        <FichaEditor
+          perfil={perfil}
+          setPerfil={setPerfil}
+          onSubmit={guardarPerfil}
+          onCancelar={() => setEditandoPerfil(false)}
+          guardando={guardandoPerfil}
+          viviendaId={id}
+          archivos={archivos}
+          recargar={cargar}
+          onError={setError}
+        />
+      ) : (
+        <section className="card">
+          <h2>Ficha del inmueble</h2>
+          <FichaResumen
+            vivienda={vivienda}
+            archivos={archivos}
+            viviendaId={id}
+            onError={setError}
+            recargar={cargar}
+          />
+        </section>
+      )}
 
       <div className="stat-row compact">
         <article className="card stat">
@@ -289,6 +170,16 @@ export default function Vivienda() {
         <article className="card stat">
           <p className="muted">Fin de contrato</p>
           <p className="stat-num small">{fechaCorta(contratoActivo?.fechaFin)}</p>
+        </article>
+        <article className="card stat">
+          <p className="muted">Rentabilidad</p>
+          <p className="stat-num small">
+            {vivienda.cifras?.rentabilidad != null ? `${vivienda.cifras.rentabilidad} %` : "—"}
+          </p>
+        </article>
+        <article className="card stat">
+          <p className="muted">Equity</p>
+          <p className="stat-num small">{euros(vivienda.cifras?.equity)}</p>
         </article>
       </div>
 
@@ -317,8 +208,6 @@ export default function Vivienda() {
           </button>
         ))}
       </div>
-
-      {error ? <p className="error">{error}</p> : null}
 
       {tab === "gastos" ? (
         <Gastos viviendaId={id} items={gastos} recargar={cargar} onError={setError} />

@@ -387,7 +387,7 @@ textarea {
 
 .stat-row {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 0.55rem;
   margin-bottom: 0.9rem;
 }
@@ -696,12 +696,114 @@ textarea {
   font-weight: 600;
 }
 
+.ficha-resumen,
+.ficha-editor {
+  margin-bottom: 1.2rem;
+}
+
+.ficha-editor .form-grid {
+  margin-bottom: 1.1rem;
+}
+
+.dato-grupo {
+  margin-bottom: 1.15rem;
+}
+
+.dato-grupo:last-child {
+  margin-bottom: 0;
+}
+
+.dato-grupo h3 {
+  margin: 0 0 0.55rem;
+  font-family: Fraunces, Georgia, serif;
+  font-size: 1.05rem;
+}
+
+.datos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 0.65rem 1rem;
+}
+
+.dato span {
+  display: block;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  font-weight: 600;
+  margin-bottom: 0.12rem;
+}
+
+.dato strong {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.dato-texto {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.dato-calc {
+  margin: 0.2rem 0 0.75rem;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+.dato-calc strong {
+  color: var(--ink);
+}
+
+.contacto-row {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 0.9fr 1.1fr auto;
+  gap: 0.4rem;
+  margin-bottom: 0.45rem;
+  align-items: center;
+}
+
+.archivos-bloque {
+  margin-top: 0.55rem;
+}
+
+.archivos-lista {
+  list-style: none;
+  margin: 0.35rem 0 0;
+  padding: 0;
+}
+
+.archivos-lista li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.linkish {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--green);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+}
+
+.file-label input[type="file"] {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 0.88rem;
+}
+
 @media (max-width: 900px) {
   .app-shell,
   .split,
   .pricing,
   .price-cards,
-  .stat-row,
   .cifras-duo,
   .filtros,
   .form-grid {
@@ -733,5 +835,9 @@ textarea {
   .page-head {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .contacto-row {
+    grid-template-columns: 1fr;
   }
 }
