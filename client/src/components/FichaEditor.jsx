@@ -388,22 +388,22 @@ export default function FichaEditor({
   );
 }
 
-function CamposSeguro({ datos, onChange }) {
+function CamposSeguro({ datos = {}, onChange }) {
   return (
     <>
       <label>
         Compañía
-        <input value={datos.compania} onChange={(e) => onChange("compania", e.target.value)} />
+        <input value={datos.compania || ""} onChange={(e) => onChange("compania", e.target.value)} />
       </label>
       <label>
         Póliza
-        <input value={datos.poliza} onChange={(e) => onChange("poliza", e.target.value)} />
+        <input value={datos.poliza || ""} onChange={(e) => onChange("poliza", e.target.value)} />
       </label>
       <label>
         Vencimiento
         <input
           type="date"
-          value={datos.vencimiento}
+          value={datos.vencimiento || ""}
           onChange={(e) => onChange("vencimiento", e.target.value)}
         />
       </label>
@@ -412,7 +412,7 @@ function CamposSeguro({ datos, onChange }) {
         <input
           type="number"
           step="0.01"
-          value={datos.importe}
+          value={datos.importe || ""}
           onChange={(e) => onChange("importe", e.target.value)}
         />
       </label>

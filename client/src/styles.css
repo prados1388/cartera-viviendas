@@ -696,6 +696,19 @@ textarea {
   font-weight: 600;
 }
 
+.ficha-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.85rem;
+}
+
+.ficha-head h2 {
+  margin: 0;
+}
+
 .ficha-resumen,
 .ficha-editor {
   margin-bottom: 1.2rem;

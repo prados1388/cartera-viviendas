@@ -58,8 +58,8 @@ export default function Viviendas() {
         <form className="card" onSubmit={crear}>
           <h2>Añadir inmueble</h2>
           <p className="muted small">
-            Con alias y dirección basta. El resto (inversión, seguros, escrituras…) se completa en la
-            ficha.
+            Con alias y dirección basta para crear. Luego entra en la vivienda y pulsa
+            <strong> Editar ficha</strong> para metros, inversión, seguros, escrituras y contactos.
           </p>
           <label>
             Alias (ej. Triana 12)

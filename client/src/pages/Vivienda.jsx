@@ -145,7 +145,12 @@ export default function Vivienda() {
         />
       ) : (
         <section className="card">
-          <h2>Ficha del inmueble</h2>
+          <div className="ficha-head">
+            <h2>Ficha del inmueble</h2>
+            <button type="button" className="btn" onClick={abrirEdicion}>
+              Editar ficha
+            </button>
+          </div>
           <FichaResumen
             vivienda={vivienda}
             archivos={archivos}

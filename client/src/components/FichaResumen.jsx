@@ -1,25 +1,24 @@
 import { api, bajarArchivo, euros, fechaCorta, porcentaje } from "../api.js";
 
 function Dato({ etiqueta, valor }) {
-  if (valor == null || valor === "" || valor === "—") return null;
+  const texto = valor == null || valor === "" ? "—" : valor;
   return (
     <div className="dato">
       <span>{etiqueta}</span>
-      <strong>{valor}</strong>
+      <strong className={texto === "—" ? "muted" : undefined}>{texto}</strong>
     </div>
   );
 }
 
-function Seguro({ titulo, s }) {
-  if (!s || (!s.compania && !s.poliza && !s.vencimiento)) return null;
+function Seguro({ titulo, s = {} }) {
   return (
     <div className="dato-grupo">
       <h3>{titulo}</h3>
       <div className="datos-grid">
         <Dato etiqueta="Compañía" valor={s.compania} />
         <Dato etiqueta="Póliza" valor={s.poliza} />
-        <Dato etiqueta="Vencimiento" valor={fechaCorta(s.vencimiento)} />
-        <Dato etiqueta="Importe" valor={s.importe != null ? euros(s.importe) : null} />
+        <Dato etiqueta="Vencimiento" valor={s.vencimiento ? fechaCorta(s.vencimiento) : ""} />
+        <Dato etiqueta="Importe" valor={s.importe != null && s.importe !== "" ? euros(s.importe) : ""} />
       </div>
     </div>
   );
@@ -29,6 +28,7 @@ export default function FichaResumen({ vivienda, archivos, viviendaId, onError, 
   const c = vivienda.cifras || {};
   const escrituras = (archivos || []).filter((a) => a.tipo === "escritura");
   const planos = (archivos || []).filter((a) => a.tipo === "plano");
+  const contactos = vivienda.contactos || [];
 
   async function quitar(archivo) {
     if (!confirm(`¿Quitar ${archivo.nombre}?`)) return;
@@ -40,42 +40,20 @@ export default function FichaResumen({ vivienda, archivos, viviendaId, onError, 
     }
   }
 
-  const vacia =
-    !vivienda.descripcion &&
-    !vivienda.referenciaCatastral &&
-    vivienda.metros == null &&
-    vivienda.anioConstruccion == null &&
-    vivienda.anioReforma == null &&
-    !vivienda.fechaCompra &&
-    !vivienda.eficienciaEnergetica &&
-    vivienda.precioCompra == null &&
-    vivienda.rentaMensual == null &&
-    vivienda.valoracionActual == null &&
-    vivienda.deudaActual == null &&
-    !vivienda.datosFiscales &&
-    !(vivienda.contactos || []).length &&
-    escrituras.length === 0 &&
-    planos.length === 0;
-
-  if (vacia) {
-    return (
-      <p className="muted">
-        Pulsa Editar para completar inversión, seguros, escrituras, planos y contactos.
-      </p>
-    );
-  }
-
   return (
     <div className="ficha-resumen">
       <div className="dato-grupo">
         <h3>Inmueble</h3>
         <div className="datos-grid">
+          <Dato etiqueta="Alias" valor={vivienda.alias} />
           <Dato etiqueta="Descripción" valor={vivienda.descripcion} />
+          <Dato etiqueta="Dirección" valor={vivienda.direccion} />
+          <Dato etiqueta="Ciudad" valor={vivienda.ciudad} />
           <Dato etiqueta="Referencia catastral" valor={vivienda.referenciaCatastral} />
-          <Dato etiqueta="Metros" valor={vivienda.metros ? `${vivienda.metros} m²` : null} />
+          <Dato etiqueta="Metros" valor={vivienda.metros != null ? `${vivienda.metros} m²` : ""} />
           <Dato etiqueta="Año construcción" valor={vivienda.anioConstruccion} />
           <Dato etiqueta="Año reforma" valor={vivienda.anioReforma} />
-          <Dato etiqueta="Fecha de compra" valor={fechaCorta(vivienda.fechaCompra)} />
+          <Dato etiqueta="Fecha de compra" valor={vivienda.fechaCompra ? fechaCorta(vivienda.fechaCompra) : ""} />
           <Dato etiqueta="Eficiencia energética" valor={vivienda.eficienciaEnergetica} />
         </div>
       </div>
@@ -86,7 +64,7 @@ export default function FichaResumen({ vivienda, archivos, viviendaId, onError, 
           <Dato etiqueta="Precio de compra" valor={euros(vivienda.precioCompra)} />
           <Dato etiqueta="Otros gastos compraventa" valor={euros(vivienda.otrosGastosCompraventa)} />
           <Dato etiqueta="Inversión total" valor={euros(c.inversionTotal)} />
-          <Dato etiqueta="Renta mensual" valor={euros(c.rentaUsada || vivienda.rentaMensual)} />
+          <Dato etiqueta="Renta mensual" valor={euros(vivienda.rentaMensual ?? c.rentaUsada)} />
           <Dato etiqueta="Rentabilidad" valor={porcentaje(c.rentabilidad)} />
           <Dato etiqueta="Valoración actual" valor={euros(vivienda.valoracionActual)} />
           <Dato etiqueta="Deuda actual" valor={euros(vivienda.deudaActual)} />
@@ -97,18 +75,20 @@ export default function FichaResumen({ vivienda, archivos, viviendaId, onError, 
       <Seguro titulo="Seguro de hogar" s={vivienda.seguroHogar} />
       <Seguro titulo="Seguro de impago" s={vivienda.seguroImpago} />
 
-      {vivienda.datosFiscales ? (
-        <div className="dato-grupo">
-          <h3>Datos fiscales</h3>
+      <div className="dato-grupo">
+        <h3>Datos fiscales</h3>
+        {vivienda.datosFiscales ? (
           <p className="dato-texto">{vivienda.datosFiscales}</p>
-        </div>
-      ) : null}
+        ) : (
+          <p className="muted">Sin datos fiscales.</p>
+        )}
+      </div>
 
-      {vivienda.contactos?.filter((x) => x.nombre || x.telefono).length ? (
-        <div className="dato-grupo">
-          <h3>Contactos</h3>
+      <div className="dato-grupo">
+        <h3>Contactos</h3>
+        {contactos.filter((x) => x.nombre || x.telefono || x.email).length ? (
           <div className="datos-grid">
-            {vivienda.contactos.map((x, i) => (
+            {contactos.map((x, i) => (
               <Dato
                 key={x._id || i}
                 etiqueta={x.rol || "Contacto"}
@@ -116,8 +96,10 @@ export default function FichaResumen({ vivienda, archivos, viviendaId, onError, 
               />
             ))}
           </div>
-        </div>
-      ) : null}
+        ) : (
+          <p className="muted">Sin contactos.</p>
+        )}
+      </div>
 
       <div className="dato-grupo">
         <h3>Documentos</h3>
@@ -145,7 +127,7 @@ function ListaArchivos({ titulo, items, viviendaId, onQuitar, onError }) {
     <div className="archivos-bloque">
       <p className="muted small">{titulo}</p>
       {items.length === 0 ? (
-        <p className="muted">Sin archivos. Añádelos al editar.</p>
+        <p className="muted">Sin archivos. Añádelos al editar la ficha.</p>
       ) : (
         <ul className="archivos-lista">
           {items.map((a) => (
