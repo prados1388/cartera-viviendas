@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
   const filtro = { usuario };
   if (filtroVivienda) filtro._id = filtroVivienda;
 
-  const viviendas = await Vivienda.find(filtro).select("alias ciudad");
+  const viviendas = await Vivienda.find(filtro).select("alias ciudad seguroHogar seguroImpago");
   const ids = viviendas.map((v) => v._id);
   const desde = new Date(Date.UTC(anio - 1, 0, 1));
   const hasta = new Date(Date.UTC(anio + 1, 11, 31, 23, 59, 59, 999));

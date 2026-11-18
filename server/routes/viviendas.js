@@ -11,9 +11,40 @@ const { camposFicha, conCifras } = require("../lib/ficha");
 const router = express.Router();
 router.use(auth);
 
+function gastosDelAnio(usuario, ids, anio) {
+  return Gasto.find({
+    usuario,
+    vivienda: { $in: ids },
+    fecha: {
+      $gte: new Date(Date.UTC(anio, 0, 1)),
+      $lte: new Date(Date.UTC(anio, 11, 31, 23, 59, 59, 999)),
+    },
+  });
+}
+
+function agruparGastos(gastos) {
+  const mapa = new Map();
+  for (const g of gastos) {
+    const k = String(g.vivienda);
+    if (!mapa.has(k)) mapa.set(k, []);
+    mapa.get(k).push(g);
+  }
+  return mapa;
+}
+
 router.get("/", async (req, res) => {
   const viviendas = await Vivienda.find({ usuario: req.usuario._id }).sort({ alias: 1 });
-  res.json({ ok: true, data: viviendas.map((v) => conCifras(v)) });
+  const anio = new Date().getFullYear();
+  const gastos = await gastosDelAnio(
+    req.usuario._id,
+    viviendas.map((v) => v._id),
+    anio
+  );
+  const porVivienda = agruparGastos(gastos);
+  res.json({
+    ok: true,
+    data: viviendas.map((v) => conCifras(v, { gastos: porVivienda.get(String(v._id)) || [], anio })),
+  });
 });
 
 router.post("/", async (req, res) => {
@@ -46,7 +77,7 @@ router.get("/:id", async (req, res) => {
   res.json({
     ok: true,
     data: {
-      vivienda: conCifras(vivienda, contratoActivo?.renta),
+      vivienda: conCifras(vivienda, { rentaContrato: contratoActivo?.renta, gastos }),
       gastos,
       contratos,
       alarmas,
@@ -66,7 +97,12 @@ router.put("/:id", async (req, res) => {
     { new: true, runValidators: true }
   );
   if (!vivienda) return res.status(404).json({ ok: false, error: "No encontrada" });
-  res.json({ ok: true, data: conCifras(vivienda, req.body.rentaMensual) });
+  const anio = new Date().getFullYear();
+  const gastos = await gastosDelAnio(req.usuario._id, [vivienda._id], anio);
+  res.json({
+    ok: true,
+    data: conCifras(vivienda, { rentaContrato: req.body.rentaMensual, gastos, anio }),
+  });
 });
 
 router.delete("/:id", async (req, res) => {

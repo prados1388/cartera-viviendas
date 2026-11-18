@@ -140,6 +140,7 @@ export default function Vivienda() {
           guardando={guardandoPerfil}
           viviendaId={id}
           archivos={archivos}
+          gastos={gastos}
           recargar={cargar}
           onError={setError}
         />
@@ -177,7 +178,7 @@ export default function Vivienda() {
           <p className="stat-num small">{fechaCorta(contratoActivo?.fechaFin)}</p>
         </article>
         <article className="card stat">
-          <p className="muted">Rentabilidad</p>
+          <p className="muted">Rentabilidad neta</p>
           <p className="stat-num small">
             {vivienda.cifras?.rentabilidad != null ? `${vivienda.cifras.rentabilidad} %` : "—"}
           </p>

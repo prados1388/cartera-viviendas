@@ -1,3 +1,5 @@
+const { segurosAnuales } = require("./cifrasVivienda");
+
 function round(n) {
   return Math.round((Number(n) || 0) * 100) / 100;
 }
@@ -35,20 +37,31 @@ function cerrarMeses(porMes) {
 
 function calcularResultados({ viviendas, gastos, contratos, anio, mes }) {
   const mapa = new Map();
+  const seguroFicha = new Map();
   for (const v of viviendas) {
-    mapa.set(String(v._id), {
+    const id = String(v._id);
+    const anualSeguros = segurosAnuales(v);
+    seguroFicha.set(id, anualSeguros);
+    const porMes = doceMeses();
+    if (anualSeguros > 0) {
+      const mensual = anualSeguros / 12;
+      for (const m of porMes) m.gastos += mensual;
+    }
+    mapa.set(id, {
       id: v._id,
       alias: v.alias,
       ciudad: v.ciudad || "",
-      porMes: doceMeses(),
+      porMes,
     });
   }
 
   for (const g of gastos) {
     const d = new Date(g.fecha);
     if (d.getUTCFullYear() !== anio) continue;
-    const fila = mapa.get(String(g.vivienda));
+    const id = String(g.vivienda);
+    const fila = mapa.get(id);
     if (!fila) continue;
+    if (g.categoria === "seguro" && (seguroFicha.get(id) || 0) > 0) continue;
     fila.porMes[d.getUTCMonth()].gastos += Number(g.importe) || 0;
   }
 

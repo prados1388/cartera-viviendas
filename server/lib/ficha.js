@@ -44,9 +44,9 @@ function camposFicha(body) {
   };
 }
 
-function conCifras(vivienda, rentaContrato) {
+function conCifras(vivienda, opts) {
   const obj = vivienda.toObject ? vivienda.toObject() : vivienda;
-  return { ...obj, cifras: cifrasVivienda(obj, rentaContrato) };
+  return { ...obj, cifras: cifrasVivienda(obj, opts) };
 }
 
 module.exports = { camposFicha, conCifras };

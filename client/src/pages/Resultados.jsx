@@ -31,8 +31,8 @@ export default function Resultados() {
           <p className="eyebrow">Control</p>
           <h1>Beneficios y pérdidas</h1>
           <p className="muted">
-            Ingresos según la renta de cada contrato vigente. Gastos, los que hayas apuntado en
-            cada vivienda.
+            Ingresos según la renta de cada contrato. En gastos entran IBI, comunidad y el resto
+            que hayas apuntado, más los seguros anuales de la ficha.
           </p>
         </div>
         <div className="filtros">

@@ -86,18 +86,32 @@ export function perfilAViviendaBody(perfil) {
   };
 }
 
-export function inversionEnVivo(perfil) {
+export function inversionEnVivo(perfil, extras = {}) {
   const precio = Number(perfil.precioCompra) || 0;
   const otros = Number(perfil.otrosGastosCompraventa) || 0;
   const inversion =
     perfil.precioCompra === "" && perfil.otrosGastosCompraventa === "" ? null : precio + otros;
   const renta = Number(perfil.rentaMensual || perfil.renta) || 0;
-  const rentabilidad = inversion > 0 && renta > 0 ? (renta * 12 * 100) / inversion : null;
+  const rentaAnual = renta * 12;
+  const seguros =
+    (Number(perfil.seguroHogar?.importe) || 0) + (Number(perfil.seguroImpago?.importe) || 0);
+  const anio = extras.anio || new Date().getFullYear();
+  let operativos = 0;
+  for (const g of extras.gastos || []) {
+    if (new Date(g.fecha).getUTCFullYear() !== anio) continue;
+    if (g.categoria === "reforma") continue;
+    if (seguros > 0 && g.categoria === "seguro") continue;
+    operativos += Number(g.importe) || 0;
+  }
+  const costes = seguros + operativos;
+  const rentabilidadBruta = inversion > 0 && rentaAnual > 0 ? (rentaAnual * 100) / inversion : null;
+  const rentabilidad =
+    inversion > 0 && (rentaAnual > 0 || costes > 0) ? ((rentaAnual - costes) * 100) / inversion : null;
   const valoracion = perfil.valoracionActual === "" ? null : Number(perfil.valoracionActual);
   const deuda = perfil.deudaActual === "" ? null : Number(perfil.deudaActual);
   const equity =
     (valoracion == null || Number.isNaN(valoracion)) && (deuda == null || Number.isNaN(deuda))
       ? null
       : (valoracion || 0) - (deuda || 0);
-  return { inversion, rentabilidad, equity };
+  return { inversion, rentabilidadBruta, rentabilidad, equity, costes };
 }

@@ -65,7 +65,9 @@ export default function FichaResumen({ vivienda, archivos, viviendaId, onError, 
           <Dato etiqueta="Otros gastos compraventa" valor={euros(vivienda.otrosGastosCompraventa)} />
           <Dato etiqueta="Inversión total" valor={euros(c.inversionTotal)} />
           <Dato etiqueta="Renta mensual" valor={euros(vivienda.rentaMensual ?? c.rentaUsada)} />
-          <Dato etiqueta="Rentabilidad" valor={porcentaje(c.rentabilidad)} />
+          <Dato etiqueta="Costes anuales" valor={euros(c.costesAnuales)} />
+          <Dato etiqueta="Rentabilidad bruta" valor={porcentaje(c.rentabilidadBruta)} />
+          <Dato etiqueta="Rentabilidad neta" valor={porcentaje(c.rentabilidad)} />
           <Dato etiqueta="Valoración actual" valor={euros(vivienda.valoracionActual)} />
           <Dato etiqueta="Deuda actual" valor={euros(vivienda.deudaActual)} />
           <Dato etiqueta="Equity" valor={euros(c.equity)} />

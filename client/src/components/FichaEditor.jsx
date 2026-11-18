@@ -18,10 +18,11 @@ export default function FichaEditor({
   guardando,
   viviendaId,
   archivos,
+  gastos = [],
   recargar,
   onError,
 }) {
-  const cifras = inversionEnVivo(perfil);
+  const cifras = inversionEnVivo(perfil, { gastos });
 
   function setCampo(campo, valor) {
     setPerfil((p) => ({ ...p, [campo]: valor }));
@@ -193,7 +194,13 @@ export default function FichaEditor({
             />
           </label>
           <p className="dato-calc">
-            Rentabilidad <strong>{porcentaje(cifras.rentabilidad)}</strong>
+            Rentabilidad bruta <strong>{porcentaje(cifras.rentabilidadBruta)}</strong>
+          </p>
+          <p className="dato-calc">
+            Rentabilidad neta <strong>{porcentaje(cifras.rentabilidad)}</strong>
+          </p>
+          <p className="muted small">
+            La neta resta seguros de la ficha e IBI, comunidad y demás gastos del año (sin reformas).
           </p>
           <label>
             Valoración actual (€)
@@ -408,7 +415,7 @@ function CamposSeguro({ datos = {}, onChange }) {
         />
       </label>
       <label>
-        Importe (€)
+        Importe anual (€)
         <input
           type="number"
           step="0.01"
