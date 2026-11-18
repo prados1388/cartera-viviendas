@@ -27,17 +27,15 @@ cd ../client
 npm install
 ```
 
-En dos terminales:
+Desde la raíz del proyecto:
 
 ```bash
-# terminal 1
-npm run dev:server
-
-# terminal 2
-npm run dev:client
+npm run dev
 ```
 
 Abre [http://127.0.0.1:5173](http://127.0.0.1:5173). Crea una cuenta y añade la primera vivienda.
+
+En Windows también puedes hacer doble clic en `run.cmd`. Si faltan dependencias, el arranque las instala solo.
 
 ## Precios
 

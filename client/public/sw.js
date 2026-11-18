@@ -1,4 +1,4 @@
-const CACHE = "cartera-v2";
+const CACHE = "cartera-v3";
 const PRECACHE = ["/", "/manifest.webmanifest", "/favicon.svg", "/icon-192.png", "/icon-512.png"];
 
 self.addEventListener("install", (event) => {
